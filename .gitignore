@@ -1,0 +1,29 @@
+# Cyber Guard Platform - Git Ignore Rules
+# Purpose: Avoid committing generated, local-only, and sensitive files.
+# Inputs/Outputs: Used by Git to exclude paths from tracking.
+# TODO Checklist:
+# - [ ] Expand ignore rules if additional tooling is added.
+# - [ ] Keep `.env.example` tracked, keep real `.env` ignored.
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.venv/
+venv/
+
+# Node
+node_modules/
+dist/
+
+# Environment/config
+.env
+backend/.env
+frontend/.env
+
+# IDE/editor
+.vscode/
+.idea/
+*.swp

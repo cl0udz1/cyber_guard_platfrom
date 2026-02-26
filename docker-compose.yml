@@ -1,0 +1,63 @@
+# Purpose:
+#   Local multi-service development stack for Cyber Guard Platform.
+# Inputs/Outputs:
+#   Spins up PostgreSQL, backend API, and frontend app containers.
+# Dependencies:
+#   Docker Desktop / Docker Engine.
+# TODO Checklist:
+# - [ ] Add production-grade Dockerfiles instead of install-on-start commands.
+# - [ ] Add persistent backend/frontend build images for CI speed.
+
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16
+    container_name: cyber_guard_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-cyber_guard}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    image: python:3.12-slim
+    container_name: cyber_guard_backend
+    depends_on:
+      - db
+    working_dir: /app/backend
+    volumes:
+      - ./:/app
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${POSTGRES_DB:-cyber_guard}
+      JWT_SECRET_KEY: CHANGE_ME_DOCKER_DEV_SECRET
+      VIRUSTOTAL_API_KEY: ""
+      CORS_ORIGINS: http://localhost:${FRONTEND_PORT:-5173}
+    command: >
+      sh -c "pip install -r requirements.txt &&
+      uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+
+  frontend:
+    image: node:22-alpine
+    container_name: cyber_guard_frontend
+    depends_on:
+      - backend
+    working_dir: /app/frontend
+    volumes:
+      - ./:/app
+    environment:
+      VITE_API_BASE_URL: http://localhost:${BACKEND_PORT:-8000}
+    command: >
+      sh -c "npm install &&
+      npm run dev -- --host 0.0.0.0 --port 5173"
+    ports:
+      - "${FRONTEND_PORT:-5173}:5173"
+
+volumes:
+  pgdata:
