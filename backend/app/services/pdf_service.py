@@ -41,9 +41,9 @@ def generate_safety_report_pdf(report: dict[str, Any]) -> bytes:
     pdf = canvas.Canvas(buffer, pagesize=letter)
     y = 750
 
-    pdf.setTitle("Cyber Guard Safety Report")
+    pdf.setTitle("cyber_guard_platform Safety Report")
     pdf.setFont("Helvetica-Bold", 14)
-    pdf.drawString(72, y, "Cyber Guard Platform - Safety Report")
+    pdf.drawString(72, y, "cyber_guard_platform - Safety Report")
     y -= 28
 
     pdf.setFont("Helvetica", 11)

@@ -1,11 +1,11 @@
-# Cyber Guard Platform (Senior Project II Skeleton)
+# cyber_guard_platform (Senior Project II Skeleton)
 
 ## Clone and Setup (Start Here)
 
 ### 1) Clone the repository
 ```bash
-git clone https://github.com/cl0udz1/cyber_gaurd_platfrom.git
-cd cyber_gaurd_platfrom
+git clone https://github.com/cl0udz1/cyber_guard_platform.git
+cd cyber_guard_platform
 ```
 
 ### 2) Backend setup
@@ -61,7 +61,7 @@ How to follow them:
 ### 1) Current Repository Structure
 ```mermaid
 flowchart TD
-    ROOT["cyber_guard_platfrom/"]
+    ROOT["cyber_guard_platform/"]
 
     ROOT --> BACKEND["backend/"]
     ROOT --> FRONTEND["frontend/"]
@@ -134,6 +134,10 @@ flowchart TB
     V2 --> X3["Team operations\nreview queues + moderation flow"]
 ```
 
+### 4) Additional Detailed Diagrams
+- [`docs/diagrams/API_SEQUENCE.md`](docs/diagrams/API_SEQUENCE.md)
+- [`docs/diagrams/DATABASE_ERD.md`](docs/diagrams/DATABASE_ERD.md)
+
 ## Header
 - Purpose: Starter codebase for a cybersecurity web platform with guest scanning, organization login, anonymized IoC sharing, and dashboard basics.
 - Inputs/Outputs: Backend API + frontend web app + PostgreSQL schema + tests + docs.
@@ -145,7 +149,7 @@ flowchart TB
   - [ ] Add migration scripts and CI pipeline.
 
 ## Project Idea Implemented
-This scaffold follows the required **Cyber Guard Platform** MVP:
+This scaffold follows the required **cyber_guard_platform** MVP:
 - Guest scan URL/file through VirusTotal integration wrapper.
 - Safety report output: `SAFE | SUSPICIOUS | MALICIOUS`.
 - Organization login with JWT token.

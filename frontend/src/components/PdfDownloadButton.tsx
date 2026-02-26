@@ -26,7 +26,7 @@ export default function PdfDownloadButton({ report }: PdfDownloadButtonProps) {
   function handleDownload() {
     // TODO: Replace this placeholder with backend-generated report bytes.
     const content = [
-      "Cyber Guard Platform - Safety Report",
+      "cyber_guard_platform - Safety Report",
       `Scan ID: ${currentReport.scan_id}`,
       `Status: ${currentReport.status}`,
       `Score: ${currentReport.score}`,

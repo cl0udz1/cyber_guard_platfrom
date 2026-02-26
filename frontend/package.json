@@ -2,7 +2,7 @@
   "name": "cyber-guard-frontend",
   "private": true,
   "version": "0.1.0",
-  "description": "Cyber Guard Platform frontend skeleton for Senior Project II",
+  "description": "cyber_guard_platform frontend skeleton for Senior Project II",
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.node.json && vite build",

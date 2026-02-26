@@ -1,4 +1,4 @@
-# API Contract - Cyber Guard Platform (MVP Skeleton)
+# API Contract - cyber_guard_platform (MVP Skeleton)
 
 ## Header
 - Purpose: Define required endpoint contract for backend/frontend alignment.

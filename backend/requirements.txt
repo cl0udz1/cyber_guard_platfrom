@@ -1,4 +1,4 @@
-# Cyber Guard Platform - Backend Dependency List
+# cyber_guard_platform - Backend Dependency List
 # Purpose: Pin the minimum set of packages for a runnable learning skeleton.
 # Inputs/Outputs: Consumed by `pip install -r requirements.txt`.
 # Dependencies: FastAPI stack, SQLAlchemy, testing libraries, PDF/report support.

@@ -1,6 +1,6 @@
 """
 Purpose:
-    Entry point for Cyber Guard Platform backend API (FastAPI app instance).
+    Entry point for cyber_guard_platform backend API (FastAPI app instance).
 Inputs:
     Runtime configuration from environment variables via `app.core.config`.
 Outputs:
@@ -59,7 +59,7 @@ def create_app() -> FastAPI:
     @app.get("/", tags=["system"])
     async def root() -> dict[str, str]:
         """Simple root endpoint to confirm API process is running."""
-        return {"message": "Cyber Guard Platform API is running."}
+        return {"message": "cyber_guard_platform API is running."}
 
     @app.get("/healthz", tags=["system"])
     async def healthz() -> dict[str, str]:

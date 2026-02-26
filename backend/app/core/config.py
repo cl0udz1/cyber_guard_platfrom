@@ -22,7 +22,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     """Typed application settings for consistent config access."""
 
-    app_name: str = Field(default="Cyber Guard Platform API")
+    app_name: str = Field(default="cyber_guard_platform API")
     app_env: str = Field(default="dev")
     app_debug: bool = Field(default=True)
     api_v1_prefix: str = Field(default="/api/v1")

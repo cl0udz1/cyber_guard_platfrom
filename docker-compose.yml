@@ -1,5 +1,5 @@
 # Purpose:
-#   Local multi-service development stack for Cyber Guard Platform.
+#   Local multi-service development stack for cyber_guard_platform.
 # Inputs/Outputs:
 #   Spins up PostgreSQL, backend API, and frontend app containers.
 # Dependencies:

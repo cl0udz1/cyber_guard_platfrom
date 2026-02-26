@@ -51,7 +51,7 @@ export default function App() {
   return (
     <div style={styles.page}>
       <header style={styles.header}>
-        <h1 style={styles.title}>Cyber Guard Platform</h1>
+        <h1 style={styles.title}>cyber_guard_platform</h1>
         <p style={styles.subtitle}>
           Student MVP skeleton: guest scan + anonymous IoC sharing (Disconnect by Design)
         </p>
