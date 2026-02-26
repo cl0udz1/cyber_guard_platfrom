@@ -1,5 +1,44 @@
 # Cyber Guard Platform (Senior Project II Skeleton)
 
+## Clone and Setup (Start Here)
+
+### 1) Clone the repository
+```bash
+git clone https://github.com/cl0udz1/cyber_gaurd_platfrom.git
+cd cyber_gaurd_platfrom
+```
+
+### 2) Backend setup
+```bash
+cd backend
+python -m venv .venv
+# Windows PowerShell:
+.venv\Scripts\Activate.ps1
+# macOS/Linux:
+# source .venv/bin/activate
+cp .env.example .env
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+```
+
+Backend URL: `http://localhost:8000`
+
+### 3) Frontend setup (new terminal)
+```bash
+cd frontend
+cp .env.example .env
+npm install
+npm run dev
+```
+
+Frontend URL: `http://localhost:5173`
+
+### 4) Run backend tests
+```bash
+cd backend
+pytest -q
+```
+
 ## Header
 - Purpose: Starter codebase for a cybersecurity web platform with guest scanning, organization login, anonymized IoC sharing, and dashboard basics.
 - Inputs/Outputs: Backend API + frontend web app + PostgreSQL schema + tests + docs.
@@ -76,4 +115,3 @@ Stored IoC shape is limited to:
   - file scans by SHA-256
   - URL scans by normalized URL
 - VirusTotal failures and rate limits are handled with retry-aware skeleton code.
-# cyber_gaurd_platfrom
