@@ -56,6 +56,84 @@ How to follow them:
 - At the end of each week, mark completed tasks and carry unfinished items to the next week.
 - Sync changes to GitHub weekly with one clear commit per week milestone.
 
+## Architecture Diagrams
+
+### 1) Current Repository Structure
+```mermaid
+flowchart TD
+    ROOT["cyber_guard_platfrom/"]
+
+    ROOT --> BACKEND["backend/"]
+    ROOT --> FRONTEND["frontend/"]
+    ROOT --> DOCS["docs/"]
+    ROOT --> INFRA["root configs"]
+
+    BACKEND --> B_APP["app/\n(api, core, db, models, schemas, services, utils)"]
+    BACKEND --> B_TESTS["tests/"]
+    BACKEND --> B_REQ["requirements.txt"]
+    BACKEND --> B_ENV[".env.example"]
+
+    FRONTEND --> F_SRC["src/\n(api, pages, components, types, utils)"]
+    FRONTEND --> F_CFG["vite + tsconfig + package.json"]
+    FRONTEND --> F_ENV[".env.example"]
+
+    DOCS --> D_PLAN["PROJECT_PLAN.md"]
+    DOCS --> D_API["API_CONTRACT.md"]
+    DOCS --> D_TEST["TEST_PLAN.md"]
+    DOCS --> D_WEEK["WEEK_1..WEEK_6_TODO.md"]
+
+    INFRA --> I_README["README.md"]
+    INFRA --> I_DOCKER["docker-compose.yml"]
+    INFRA --> I_ENV[".env.example"]
+```
+
+### 2) Current Runtime/Data Flow (MVP Skeleton)
+```mermaid
+flowchart LR
+    U["Guest / Org User"] --> FE["Frontend (React + Vite)"]
+    FE --> API["Backend API (FastAPI)"]
+
+    API --> AUTH["Auth Endpoints\n/login, /me"]
+    API --> SCAN["Scan Endpoints\n/url, /file, /{scan_id}"]
+    API --> IOC["IoC Endpoint\n/submit"]
+    API --> DASH["Dashboard Endpoint\n/summary"]
+
+    SCAN --> SS["scan_service.py"]
+    SS --> CACHE["Scan Cache (DB)\nurl normalized / sha256"]
+    SS --> VT["virustotal_client.py"]
+    VT --> EXT["VirusTotal API"]
+
+    IOC --> ANON["anonymizer.py\nreject identity fields"]
+    ANON --> IOCDB["IoC Table (anonymous only)"]
+
+    DASH --> DBR["DB aggregate queries"]
+    AUTH --> JWT["JWT helpers"]
+
+    DB[(PostgreSQL)] --- CACHE
+    DB --- IOCDB
+    DB --- DBR
+```
+
+### 3) Future Target State (Smart Growth Path)
+```mermaid
+flowchart TB
+    NOW["Current MVP Skeleton"]
+    W6["Week 6 Stable Demo"]
+    V1["Production-Ready v1"]
+    V2["Analytics + Collaboration v2"]
+
+    NOW --> W6 --> V1 --> V2
+
+    V1 --> P1["Real DB-backed auth\n(user/org tables + RBAC)"]
+    V1 --> P2["Full VT workflow\n(submit + poll + normalized evidence)"]
+    V1 --> P3["PDF endpoint\nserver-generated report downloads"]
+    V1 --> P4["Alembic migrations + CI pipeline\n(test/lint/security checks)"]
+
+    V2 --> X1["Trend analytics APIs\n(time buckets, top tags, patterns)"]
+    V2 --> X2["Improved privacy controls\npolicy-driven anonymizer rules"]
+    V2 --> X3["Team operations\nreview queues + moderation flow"]
+```
+
 ## Header
 - Purpose: Starter codebase for a cybersecurity web platform with guest scanning, organization login, anonymized IoC sharing, and dashboard basics.
 - Inputs/Outputs: Backend API + frontend web app + PostgreSQL schema + tests + docs.
