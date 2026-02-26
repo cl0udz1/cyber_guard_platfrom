@@ -39,6 +39,23 @@ cd backend
 pytest -q
 ```
 
+## 6-Week Execution Files (Follow These)
+
+Use these six files as your week-by-week implementation checklist:
+
+1. `docs/WEEK_1_TODO.md`
+2. `docs/WEEK_2_TODO.md`
+3. `docs/WEEK_3_TODO.md`
+4. `docs/WEEK_4_TODO.md`
+5. `docs/WEEK_5_TODO.md`
+6. `docs/WEEK_6_TODO.md`
+
+How to follow them:
+- Start from Week 1 and move in order to Week 6.
+- Use A/B/C/D/E/F role assignments shown in each file.
+- At the end of each week, mark completed tasks and carry unfinished items to the next week.
+- Sync changes to GitHub weekly with one clear commit per week milestone.
+
 ## Header
 - Purpose: Starter codebase for a cybersecurity web platform with guest scanning, organization login, anonymized IoC sharing, and dashboard basics.
 - Inputs/Outputs: Backend API + frontend web app + PostgreSQL schema + tests + docs.
