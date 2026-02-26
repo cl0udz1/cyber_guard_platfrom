@@ -8,34 +8,34 @@
 erDiagram
     USERS {
         string id PK
-        string email UNIQUE
+        string email UK
         string password_hash
         string role
         boolean is_active
-        datetime created_at
+        string created_at
     }
 
     IOCS {
         string id PK
         string type
-        text value
+        string value
         int confidence
-        json tags
-        datetime first_seen
-        datetime created_at
+        string tags_json
+        string first_seen
+        string created_at
     }
 
     SCAN_RESULTS {
         string id PK
         string scan_type
-        string scan_key UNIQUE
-        text original_input
+        string scan_key UK
+        string original_input
         string status
         int score
-        text summary
-        json reasons
-        json raw_vt_json
-        datetime created_at
+        string summary
+        string reasons_json
+        string raw_vt_json
+        string created_at
     }
 ```
 
