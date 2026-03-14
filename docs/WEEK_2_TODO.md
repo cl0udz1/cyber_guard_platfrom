@@ -1,18 +1,34 @@
-# Week 2 To-Do List (Team A-F)
+# WEEK_2_TODO.md
 
 ## Goal
-Complete authentication and anonymous IoC submission foundation.
 
-| Person | To-Do | Main File Names |
+Finish backend model/schema/contract alignment so implementation can start without route confusion.
+
+## Deliverables
+
+- stable schema files
+- stable route surface
+- stable model list
+- initial RBAC and privacy helpers
+
+## Per-Owner Tasks
+
+| Owner | Tasks | Main Files |
 |---|---|---|
-| A | Strengthen login flow and token claims handling. | `backend/app/api/v1/endpoints/auth.py`, `backend/app/core/security.py` |
-| B | Improve dependency wiring for auth-protected routes. | `backend/app/api/deps.py`, `backend/app/api/v1/router.py` |
-| C | Enforce anonymization and identity-field rejection logic. | `backend/app/services/anonymizer.py`, `backend/app/schemas/ioc.py`, `backend/app/models/ioc.py` |
-| D | Implement frontend login and IoC submit form behavior. | `frontend/src/pages/LoginPage.tsx`, `frontend/src/pages/SubmitIocPage.tsx`, `frontend/src/types/user.ts`, `frontend/src/types/ioc.ts` |
-| E | Update privacy design notes and endpoint examples in docs. | `docs/API_CONTRACT.md`, `README.md` |
-| F | Expand tests for auth and anonymizer edge cases. | `backend/tests/test_auth_endpoints.py`, `backend/tests/test_anonymizer.py` |
+| A | Refine request/response models for auth, orgs, workspaces, scan jobs, and reports. | `backend/app/schemas/*`, `backend/app/api/routes/*` |
+| B | Confirm service input/output shapes match route payloads. | `backend/app/services/*` |
+| C | Finalize entity fields and FK intentions without overbuilding. | `backend/app/models/*` |
+| D | Mirror important backend contract types in frontend planning files. | `frontend/src/types/*`, `frontend/src/api/endpoints.ts` |
+| E | Review public-threats/admin route shapes for frontend needs. | `frontend/src/pages/public-threats/*`, `frontend/src/pages/admin/*` |
+| F | Update API contract and test plan to match exact route names. | `docs/API_CONTRACT.md`, `docs/TEST_PLAN.md` |
 
-## Team Checklist
-- [ ] `/api/v1/auth/login` works end-to-end.
-- [ ] `/api/v1/ioc/submit` rejects identity-like fields.
-- [ ] Docs reflect the final Week 2 auth/privacy behavior.
+## Dependency Notes
+
+- route shapes should stabilize before deep frontend wiring begins
+- avoid adding endpoints that have no clear assignment owner
+
+## Done Criteria
+
+- route groups are frozen at scaffold level
+- schema names and file ownership are clear
+- team can start implementation without guessing field names

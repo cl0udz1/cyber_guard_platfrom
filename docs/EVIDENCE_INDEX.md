@@ -1,27 +1,15 @@
-# EVIDENCE_INDEX.md - Demo and Verification Artifacts
+# EVIDENCE_INDEX.md
 
-## Header
-- Purpose: Track where evidence files/screenshots/logs for grading are stored.
-- Inputs/Outputs: List of artifact names, location, and what requirement they prove.
-- Dependencies: Demo recordings, screenshots, test output files.
-- TODO Checklist:
-  - [ ] Attach actual screenshot/video/log paths.
-  - [ ] Add timestamps and owner initials for each artifact.
-  - [ ] Keep evidence synchronized with latest commit hash.
+This file is a placeholder evidence checklist for later demo and report assembly. Update it as implementation becomes real.
 
-## Suggested Evidence Entries
-
-| Evidence ID | Description | Suggested File Path | Requirement(s) |
+| Evidence ID | What To Capture | Suggested File | Related Area |
 |---|---|---|---|
-| E1 | Backend startup screenshot (`uvicorn app.main:app --reload`) | `docs/evidence/backend-startup.png` | R1-R8 baseline |
-| E2 | Frontend startup screenshot (`npm run dev`) | `docs/evidence/frontend-startup.png` | UI readiness |
-| E3 | Guest URL scan successful response | `docs/evidence/guest-url-scan.png` | R1 |
-| E4 | Guest file scan successful response | `docs/evidence/guest-file-scan.png` | R2 |
-| E5 | Login + `/auth/me` proof | `docs/evidence/auth-flow.png` | R4, R5 |
-| E6 | IoC anonymizer rejection proof | `docs/evidence/anonymizer-reject.png` | R6 |
-| E7 | Dashboard summary render | `docs/evidence/dashboard-summary.png` | R7 |
-| E8 | Pytest run output | `docs/evidence/pytest-output.txt` | R1-R8 |
-
-## Notes
-- Keep raw test logs and screenshots unedited.
-- Include commit hash in final report for reproducibility.
+| E1 | Login / `/auth/me` working flow | `evidence/auth-flow.png` | Auth |
+| E2 | Workspace and role-aware UI screenshot | `evidence/workspace-view.png` | Orgs / Workspaces |
+| E3 | Scan job submission and completed job JSON | `evidence/scan-job-response.json` | Scan orchestration |
+| E4 | Private report view | `evidence/private-report.png` | Reports |
+| E5 | Publish request / sanitized preview | `evidence/publish-request.json` | Public sharing |
+| E6 | Admin review queue and decision | `evidence/admin-review.png` | Admin review |
+| E7 | Public threats page screenshot | `evidence/public-threats.png` | Public threats |
+| E8 | Test run output | `evidence/test-run.txt` | Testing |
+| E9 | Updated diagrams snapshot/export | `evidence/architecture-diagrams.pdf` | Documentation |

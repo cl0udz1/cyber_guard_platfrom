@@ -1,1 +1,1 @@
-"""Package marker for Cyber Guard backend modules."""
+"""Cyber Guard backend package."""

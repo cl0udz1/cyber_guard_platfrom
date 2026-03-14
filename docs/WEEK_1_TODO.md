@@ -1,18 +1,34 @@
-# Week 1 To-Do List (Team A-F)
+# WEEK_1_TODO.md
 
 ## Goal
-Project setup validation, ownership split, and baseline implementation alignment.
 
-| Person | To-Do | Main File Names |
+Lock scope and finish the repo refresh so the team is working from the same product definition.
+
+## Deliverables
+
+- updated README
+- updated architecture and plan docs
+- cleaned backend/frontend folder structure
+- assignment map and implementation tracker in use
+
+## Per-Owner Tasks
+
+| Owner | Tasks | Main Files |
 |---|---|---|
-| A | Verify backend runtime config and environment templates. | `backend/app/core/config.py`, `backend/.env.example`, `.env.example` |
-| B | Validate DB connection/session skeleton and base model setup. | `backend/app/db/base.py`, `backend/app/db/session.py` |
-| C | Review and align base auth/scan schemas with API contract. | `backend/app/schemas/auth.py`, `backend/app/schemas/scan.py` |
-| D | Confirm frontend app shell loads and main navigation works. | `frontend/src/main.tsx`, `frontend/src/App.tsx` |
-| E | Draft week notes and check project scope docs are aligned. | `docs/PROJECT_PLAN.md`, `docs/API_CONTRACT.md`, `README.md` |
-| F | Run backend tests and capture initial baseline test result. | `backend/tests/conftest.py`, `backend/tests/test_auth_endpoints.py` |
+| A | Confirm route groups and schema ownership boundaries. | `backend/app/api/*`, `docs/API_CONTRACT.md` |
+| B | Confirm service boundaries for scan orchestration, reporting, and sharing. | `backend/app/services/*`, `docs/ARCHITECTURE.md` |
+| C | Confirm model list and privacy boundary at the data level. | `backend/app/models/*`, `docs/diagrams/ERD.md` |
+| D | Confirm scan/report frontend page ownership and component grouping. | `frontend/src/pages/scan/*`, `frontend/src/pages/reports/*` |
+| E | Confirm dashboard/public/admin page ownership and wording. | `frontend/src/pages/dashboard/*`, `frontend/src/pages/public-threats/*`, `frontend/src/pages/admin/*` |
+| F | Update assignment docs, weekly plan, and implementation tracker. | `docs/ASSIGNMENT_MAP.md`, `docs/IMPLEMENTATION_STATUS.md`, `docs/WEEK_*.md` |
 
-## Team Checklist
-- [ ] All members can run backend locally.
-- [ ] All members can run frontend locally.
-- [ ] Initial responsibilities accepted by A-F.
+## Dependency Notes
+
+- Do not start detailed implementation until the new concept is accepted by the whole team.
+- Keep public/private data separation visible in every new plan or file.
+
+## Done Criteria
+
+- team agrees on updated product truth
+- no major old-concept files remain in active folders
+- ownership map is usable for assignment splitting

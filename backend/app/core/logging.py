@@ -1,28 +1,23 @@
 """
 Purpose:
-    Minimal logging configuration for backend observability.
+    Shared logging setup for API routes, scan orchestration, and review workflows.
 Inputs:
-    Python `logging` module settings.
+    Python logging configuration invoked during app startup.
 Outputs:
-    Configured log format and level for console output.
+    Consistent console logging format for local development and demos.
 Dependencies:
     Standard library `logging`.
 TODO Checklist:
-    - [ ] Add request ID correlation middleware.
-    - [ ] Ship logs as JSON in production.
-    - [ ] Add separate handlers for access/error logs.
+    - [ ] Add structured audit logs for publish/review decisions.
+    - [ ] Split request logs from enrichment adapter diagnostics.
+    - [ ] Add correlation IDs once async workers are introduced for real.
 """
 
 import logging
 
 
 def configure_logging(level: int = logging.INFO) -> None:
-    """
-    Configure root logger once.
-
-    NOTE:
-        This skeleton keeps logging intentionally simple for student readability.
-    """
+    """Configure a lightweight readable logging format for the scaffold."""
     logging.basicConfig(
         level=level,
         format="%(asctime)s | %(levelname)s | %(name)s | %(message)s",

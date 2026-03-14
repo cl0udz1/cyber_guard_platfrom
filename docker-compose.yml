@@ -1,5 +1,5 @@
 # Purpose:
-#   Local multi-service development stack for cyber_guard_platform.
+#   Local multi-service development stack for the refreshed Cyber Guard scaffold.
 # Inputs/Outputs:
 #   Spins up PostgreSQL, backend API, and frontend app containers.
 # Dependencies:
@@ -35,7 +35,12 @@ services:
     environment:
       DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${POSTGRES_DB:-cyber_guard}
       JWT_SECRET_KEY: CHANGE_ME_DOCKER_DEV_SECRET
+      DEMO_ORG_ADMIN_PASSWORD: org-admin-demo
+      DEMO_PLATFORM_ADMIN_PASSWORD: platform-admin-demo
       VIRUSTOTAL_API_KEY: ""
+      LOCAL_AI_ENABLED: ${LOCAL_AI_ENABLED:-true}
+      API_AI_ENABLED: ${API_AI_ENABLED:-true}
+      PUBLIC_THREATS_API_ENABLED: ${PUBLIC_THREATS_API_ENABLED:-false}
       CORS_ORIGINS: http://localhost:${FRONTEND_PORT:-5173}
     command: >
       sh -c "pip install -r requirements.txt &&

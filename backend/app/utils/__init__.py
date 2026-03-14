@@ -1,1 +1,1 @@
-"""Package marker for Cyber Guard backend modules."""
+"""Utility helpers for the Cyber Guard backend scaffold."""

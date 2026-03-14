@@ -8,9 +8,9 @@ Outputs:
 Dependencies:
     SQLAlchemy, backend settings.
 TODO Checklist:
-    - [ ] Enable SQLAlchemy async engine if switching to async DB access.
-    - [ ] Tune pool settings for production load.
-    - [ ] Add automatic retry policy for transient DB failures.
+    - [ ] Add async engine support if the team moves long-running orchestration off-thread.
+    - [ ] Add separate storage/schema handling for public threat data if needed later.
+    - [ ] Tune connection pooling before deployment beyond classroom demos.
 """
 
 from collections.abc import Generator
@@ -24,7 +24,6 @@ settings = get_settings()
 
 connect_args: dict[str, object] = {}
 if settings.database_url.startswith("sqlite"):
-    # SQLite needs this flag when used in multi-threaded test client context.
     connect_args["check_same_thread"] = False
 
 engine = create_engine(
@@ -38,7 +37,7 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine, clas
 
 
 def get_db() -> Generator[Session, None, None]:
-    """FastAPI dependency that yields a DB session per request."""
+    """Yield one database session per request."""
     db = SessionLocal()
     try:
         yield db

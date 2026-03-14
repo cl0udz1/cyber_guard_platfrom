@@ -1,95 +1,66 @@
 """
 Purpose:
-    Transform raw VirusTotal-style payloads into simple safety report fields.
+    Build and store private threat report placeholders from completed scan jobs.
 Inputs:
-    Scan ID and raw VT response JSON.
+    Scan job metadata, enrichment hits, and optional AI summary text.
 Outputs:
-    Simplified report fields used by API responses and PDF generation.
+    Typed threat report responses retrievable by report ID.
 Dependencies:
-    Standard library datetime.
+    Report schemas and threat severity rules.
 TODO Checklist:
-    - [ ] Calibrate score thresholds using real dataset validation.
-    - [ ] Add richer reason templates by engine/category.
-    - [ ] Add localization support if needed.
+    - [ ] Replace in-memory storage with DB persistence.
+    - [ ] Add section versioning only if analyst editing becomes part of scope.
 """
 
 from datetime import datetime, timezone
-from typing import Any
+from uuid import uuid4
+
+from app.schemas.artifact import ArtifactSubmissionResponse
+from app.schemas.report import ThreatReportResponse
+from app.schemas.scan import SourceHit
+from app.utils.enums import PublicShareStatus, ThreatSeverity
 
 
-def _extract_stats(vt_payload: dict[str, Any]) -> dict[str, int]:
-    """
-    Extract analysis stats from multiple possible payload shapes.
+class ReportService:
+    """Create and retain scaffold threat reports in memory."""
 
-    Handles both:
-        - VT-like nested payload (`data.attributes.last_analysis_stats`)
-        - Simplified test payload (`stats` at root).
-    """
-    stats = vt_payload.get("stats")
-    if isinstance(stats, dict):
-        return {
-            "malicious": int(stats.get("malicious", 0)),
-            "suspicious": int(stats.get("suspicious", 0)),
-            "harmless": int(stats.get("harmless", 0)),
-            "undetected": int(stats.get("undetected", 0)),
-        }
+    def __init__(self) -> None:
+        self._reports: dict[str, ThreatReportResponse] = {}
 
-    nested = (
-        vt_payload.get("data", {})
-        .get("attributes", {})
-        .get("last_analysis_stats", {})
-    )
-    if isinstance(nested, dict):
-        return {
-            "malicious": int(nested.get("malicious", 0)),
-            "suspicious": int(nested.get("suspicious", 0)),
-            "harmless": int(nested.get("harmless", 0)),
-            "undetected": int(nested.get("undetected", 0)),
-        }
+    async def build_report(
+        self,
+        scan_job_id: str,
+        artifact: ArtifactSubmissionResponse,
+        source_hits: list[SourceHit],
+        ai_summary: str | None,
+    ) -> ThreatReportResponse:
+        """Build a private threat report from source hits and optional AI output."""
+        max_score = max((hit.confidence_score for hit in source_hits), default=20)
+        severity = ThreatSeverity.MEDIUM
+        if max_score >= 80:
+            severity = ThreatSeverity.HIGH
+        elif max_score < 35:
+            severity = ThreatSeverity.LOW
 
-    return {"malicious": 0, "suspicious": 0, "harmless": 0, "undetected": 0}
+        report = ThreatReportResponse(
+            report_id=str(uuid4()),
+            scan_job_id=scan_job_id,
+            severity=severity,
+            confidence=max_score,
+            executive_summary=f"Scaffold report for {artifact.artifact_type.value} artifact submission.",
+            recommended_actions=[
+                "Review source findings in the private workspace.",
+                "Decide whether anonymized publication is appropriate.",
+                "Track duplicate submissions before escalating externally.",
+            ],
+            source_summary=[hit.summary for hit in source_hits],
+            ai_summary=ai_summary,
+            publish_status=PublicShareStatus.PRIVATE,
+            created_at=datetime.now(timezone.utc),
+        )
+        self._reports[report.report_id] = report
+        return report
 
-
-def build_safety_report(scan_id: str, vt_payload: dict[str, Any]) -> dict[str, Any]:
-    """
-    Build simplified SAFE/SUSPICIOUS/MALICIOUS report.
-
-    Output keys match required API contract.
-    """
-    stats = _extract_stats(vt_payload)
-    malicious = stats["malicious"]
-    suspicious = stats["suspicious"]
-
-    if malicious > 0:
-        status = "MALICIOUS"
-        score = min(100, 80 + malicious * 5)
-        summary = "Multiple security engines flagged this target as malicious."
-        reasons = [
-            f"{malicious} engine(s) marked it as malicious.",
-            "Do not open/click/execute related content.",
-        ]
-    elif suspicious > 0:
-        status = "SUSPICIOUS"
-        score = min(79, 40 + suspicious * 5)
-        summary = "At least one indicator appears suspicious."
-        reasons = [
-            f"{suspicious} engine(s) marked it as suspicious.",
-            "Use caution and verify with additional evidence.",
-        ]
-    else:
-        status = "SAFE"
-        score = 10
-        summary = "No immediate malicious indicators were detected."
-        reasons = [
-            "No malicious engine hits were reported in this lookup.",
-            "Continue monitoring because no scan is 100% perfect.",
-        ]
-
-    return {
-        "scan_id": scan_id,
-        "status": status,
-        "score": score,
-        "summary": summary,
-        "reasons": reasons,
-        "created_at": datetime.now(timezone.utc),
-    }
+    def get_report(self, report_id: str) -> ThreatReportResponse | None:
+        """Return a previously built report if it exists."""
+        return self._reports.get(report_id)

@@ -1,16 +1,16 @@
 """
 Purpose:
-    Entry point for cyber_guard_platform backend API (FastAPI app instance).
+    FastAPI application entry point for the Cyber Guard scaffold refresh.
 Inputs:
-    Runtime configuration from environment variables via `app.core.config`.
+    Runtime configuration, logging setup, and API router.
 Outputs:
-    Exposes HTTP routes for scan/auth/IoC/dashboard features under `/api/v1`.
+    Runnable API with scaffold routes under `/api/v1`.
 Dependencies:
-    FastAPI, API routers, logging config, settings.
+    FastAPI, CORS middleware, settings, and route registration.
 TODO Checklist:
-    - [ ] Add startup health checks for database and external APIs.
-    - [ ] Add global exception handlers and structured error responses.
-    - [ ] Add API versioning strategy beyond v1.
+    - [ ] Add startup checks for DB and configured enrichment adapters.
+    - [ ] Add exception handlers with a consistent error envelope.
+    - [ ] Add worker/process notes once async jobs move beyond placeholder orchestration.
 """
 
 from contextlib import asynccontextmanager
@@ -18,31 +18,25 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.v1.router import api_router
+from app.api.router import api_router
 from app.core.config import get_settings
 from app.core.logging import configure_logging
 
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
-    """
-    Keep startup/shutdown logic in one place.
-
-    TODO:
-        - Add DB connectivity checks.
-        - Add warm-up job for cache/report templates if needed.
-    """
+    """Keep startup and shutdown hooks in one obvious place."""
     configure_logging()
     yield
 
 
 def create_app() -> FastAPI:
-    """Factory pattern helps tests import the same app object cleanly."""
+    """Create the FastAPI app used by the server and tests."""
     settings = get_settings()
     app = FastAPI(
         title=settings.app_name,
         debug=settings.app_debug,
-        version="0.1.0-skeleton",
+        version="0.2.0-scaffold",
         lifespan=lifespan,
     )
 
@@ -58,19 +52,21 @@ def create_app() -> FastAPI:
 
     @app.get("/", tags=["system"])
     async def root() -> dict[str, str]:
-        """Simple root endpoint to confirm API process is running."""
-        return {"message": "cyber_guard_platform API is running."}
+        """Simple root endpoint to confirm the scaffold boots."""
+        return {"message": "Cyber Guard Platform API scaffold is running."}
 
     @app.get("/healthz", tags=["system"])
-    async def healthz() -> dict[str, str]:
-        """
-        Lightweight health endpoint.
-
-        TODO:
-            - Include DB readiness in a richer health endpoint.
-            - Add external dependency status checks.
-        """
-        return {"status": "ok"}
+    async def healthz() -> dict[str, object]:
+        """Return a lightweight local health signal."""
+        return {
+            "status": "ok",
+            "mode": "scaffold",
+            "features": {
+                "async_scan_jobs": True,
+                "public_threats": True,
+                "disconnect_by_design": True,
+            },
+        }
 
     return app
 

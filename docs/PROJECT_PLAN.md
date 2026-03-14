@@ -1,81 +1,98 @@
-# PROJECT_PLAN.md - Week-by-Week Roadmap
+# PROJECT_PLAN.md
 
-## Header
-- Purpose: Provide a student-friendly implementation timeline for Senior Project II.
-- Inputs/Outputs: Weekly objectives, deliverables, and checkpoints.
-- Dependencies: API contract, test plan, project rubric.
-- TODO Checklist:
-  - [ ] Align dates with your university calendar.
-  - [ ] Add owner names for each task.
-  - [ ] Track risks and mitigation per week.
+## Purpose
 
-## Week 1 - Problem Framing and Scope Lock
-- Confirm MVP scope and non-functional constraints.
-- Define "Disconnect by Design" privacy rules.
-- Finalize architecture decision (FastAPI + React + PostgreSQL).
-- Deliverable: approved scope document and architecture sketch.
+This plan is for implementing the refreshed Cyber Guard scaffold in a realistic student sequence. It separates MVP commitments from later expansion so the team can deliver something coherent instead of overpromising.
 
-## Week 2 - Backend Skeleton
-- Setup FastAPI structure and dependencies.
-- Add config, logging, DB session, model skeletons.
-- Add core endpoint routes (scan/auth/ioc/dashboard) with stubs.
-- Deliverable: backend app boots with `uvicorn app.main:app --reload`.
+## MVP Scope
 
-## Week 3 - Database and Models
-- Finalize SQLAlchemy models for `users`, `scan_results`, `iocs`.
-- Ensure IoC table has no identity-link fields.
-- Prepare Alembic migration workflow skeleton.
-- Deliverable: schema created locally and model-level tests passing.
+The MVP target for this repo should include:
 
-## Week 4 - Scan Service MVP
-- Implement URL normalization and file SHA-256 hashing.
-- Add VirusTotal client wrapper with timeout/retry notes.
-- Add cache behavior by normalized URL and SHA-256.
-- Deliverable: scan endpoints return deterministic reports.
+- user and organization account flow scaffold
+- organization workspaces and role-based access placeholders
+- artifact submission for file/hash/url/email signal
+- asynchronous scan job contract
+- multi-source enrichment adapter structure
+- optional AI mode selection structure
+- private threat report generation flow
+- workspace dashboard overview
+- anonymized public threats publishing flow
+- admin review path for external public uploads
+- documented Disconnect by Design separation
 
-## Week 5 - Auth + Privacy Enforcement
-- Add login endpoint and JWT helper flow.
-- Add `/auth/me` protected endpoint.
-- Implement anonymizer service to reject identity-like fields.
-- Deliverable: IoC submission enforces anonymity constraints.
+## Phase 2 Scope
 
-## Week 6 - Dashboard MVP
-- Add dashboard summary endpoint with:
-  - counts by IoC type
-  - recent IoCs
-  - recent scans
-- Deliverable: JSON summary consumed by frontend.
+Only enter Phase 2 if MVP is stable:
 
-## Week 7 - Frontend Skeleton
-- Build Vite React TypeScript app scaffolding.
-- Create pages/components for guest scan, login, submit IoC, dashboard.
-- Add API client wrappers and base UI wiring.
-- Deliverable: `npm run dev` starts and page navigation works.
+- public threats API for third-party use
+- richer dashboard analytics and filters
+- real background worker queue
+- real external threat-intel integrations
+- real local AI and remote AI provider execution
+- export/download workflows beyond simple placeholders
 
-## Week 8 - Frontend Integration
-- Connect forms to backend endpoints.
-- Render safety report with status and reasons.
-- Add placeholder PDF download button workflow.
-- Deliverable: end-to-end manual flow for guest scan and login flow.
+## Delivery Strategy
 
-## Week 9 - Testing Expansion
-- Add pytest endpoint tests and service tests.
-- Add VT httpx mocking tests.
-- Add anonymizer and cache hit/miss coverage.
-- Deliverable: repeatable test run with clear pass/fail report.
+### Phase 1: Scope Lock + Restructure
 
-## Week 10 - Documentation and Evidence
-- Complete API contract and test traceability.
-- Capture screenshots, logs, and demo scripts.
-- Deliverable: updated docs and evidence index.
+- align the repo to the new Cyber Guard concept
+- clean outdated VirusTotal-only and guest-only assumptions
+- finalize folder ownership and docs structure
 
-## Week 11 - Hardening and Refinement
-- Improve error handling for rate limits/timeouts.
-- Improve UI clarity and accessibility basics.
-- Deliverable: polished MVP demo candidate.
+### Phase 2: Models + Contracts
 
-## Week 12 - Final Demo and Handover
-- Run full walkthrough demo.
-- Present privacy design and security decisions.
-- Hand over code, docs, and known limitations.
-- Deliverable: final report + demo package.
+- finalize ORM entities and schemas
+- freeze scaffold-level API routes
+- make role boundaries and public/private separation explicit
+
+### Phase 3: Scan Engine Skeleton
+
+- build artifact normalization, IOC extraction, cache, enrichment adapter, and AI mode skeletons
+- keep execution lightweight and synchronous-in-code while exposing async job concepts
+
+### Phase 4: Reports + Sharing
+
+- define threat report structure
+- define sanitization/publication workflow
+- add admin review queue shape
+
+### Phase 5: Frontend Ownership Map
+
+- create page groups for auth, workspace, scan, reports, dashboard, public threats, and admin review
+- wire a navigable shell with clear placeholder responsibilities
+
+### Phase 6: Validation + Handover
+
+- align tests to the new route surface
+- update diagrams, TODO files, and implementation tracker
+- prepare the repo for team assignment and incremental implementation
+
+## Feasibility Notes
+
+- keep one backend app and one frontend app
+- avoid microservices
+- avoid full production infrastructure unless required by the course
+- use stubs and placeholders aggressively where the implementation is not yet assigned
+- prioritize clarity of ownership over feature count
+
+## Suggested Milestone Gates
+
+### Gate 1
+
+- repo tree matches updated concept
+- README and assignment docs are current
+
+### Gate 2
+
+- backend route groups, schemas, and models exist
+- frontend page groups exist
+
+### Gate 3
+
+- scan job flow, report flow, and public sharing flow are represented end-to-end at scaffold level
+
+### Gate 4
+
+- weekly TODO system is actionable
+- implementation status tracker is in use
+- tests and docs pass basic validation

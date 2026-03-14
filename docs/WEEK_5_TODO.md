@@ -1,18 +1,34 @@
-# Week 5 To-Do List (Team A-F)
+# WEEK_5_TODO.md
 
 ## Goal
-Integration hardening, developer workflow cleanup, and documentation quality.
 
-| Person | To-Do | Main File Names |
+Upgrade the frontend from placeholder shell to assignment-ready implementation skeleton.
+
+## Deliverables
+
+- navigable frontend shell
+- page groups mapped to backend route groups
+- typed mocks and components by domain
+- clear ownership hints in the UI scaffold
+
+## Per-Owner Tasks
+
+| Owner | Tasks | Main Files |
 |---|---|---|
-| A | Improve backend app reliability (startup checks, logging TODOs, error handling notes). | `backend/app/main.py`, `backend/app/core/logging.py` |
-| B | Tighten security and dependency checks for protected routes. | `backend/app/api/deps.py`, `backend/app/core/security.py` |
-| C | Review and refine validation guards + input constraints. | `backend/app/utils/validators.py`, `backend/app/schemas/ioc.py`, `backend/app/schemas/scan.py` |
-| D | Polish frontend UX messaging and validation clarity. | `frontend/src/utils/validators.ts`, `frontend/src/utils/formatters.ts`, `frontend/src/pages/LoginPage.tsx`, `frontend/src/pages/SubmitIocPage.tsx` |
-| E | Finalize local setup docs and environment/run instructions. | `README.md`, `docker-compose.yml`, `.env.example`, `frontend/.env.example`, `backend/.env.example` |
-| F | Full test run + report of failures/warnings and follow-up tasks. | `backend/tests/conftest.py`, `backend/tests/test_*.py`, `docs/TEST_PLAN.md` |
+| A | Confirm frontend/backend naming stays aligned. | `docs/API_CONTRACT.md`, `frontend/src/api/endpoints.ts` |
+| B | Expose any missing backend fields needed by pages. | `backend/app/schemas/*`, `backend/app/api/routes/*` |
+| C | Review RBAC and workspace context needs from the UI. | `backend/app/core/permissions.py`, `backend/app/models/membership.py` |
+| D | Implement scan and reports page wiring first. | `frontend/src/pages/scan/*`, `frontend/src/pages/reports/*`, `frontend/src/components/scan/*`, `frontend/src/components/reports/*` |
+| E | Implement dashboard, public threats, admin, and workspace pages. | `frontend/src/pages/dashboard/*`, `frontend/src/pages/public-threats/*`, `frontend/src/pages/admin/*`, `frontend/src/pages/workspace/*` |
+| F | Keep feature notes, types, and docs synchronized. | `frontend/src/features/*`, `frontend/src/types/*`, `docs/IMPLEMENTATION_STATUS.md` |
 
-## Team Checklist
-- [ ] Backend and frontend start with one command each.
-- [ ] No contract mismatch between frontend and backend.
-- [ ] Setup instructions are clear for a new teammate.
+## Dependency Notes
+
+- do not overbuild visuals before data contracts settle
+- prioritize clear ownership and file placement over polish
+
+## Done Criteria
+
+- frontend shell reflects the updated product concept
+- every main page has a clear owner and component boundary
+- build passes cleanly

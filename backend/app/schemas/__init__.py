@@ -1,1 +1,1 @@
-"""Package marker for Cyber Guard backend modules."""
+"""Pydantic schemas for the Cyber Guard backend scaffold."""

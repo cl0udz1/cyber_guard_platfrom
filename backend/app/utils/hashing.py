@@ -1,15 +1,15 @@
 """
 Purpose:
-    Utility helpers for SHA-256 hashing.
+    Hashing helpers for artifact normalization, cache keys, and report fingerprints.
 Inputs:
-    File bytes or byte chunks.
+    File bytes, byte chunks, or normalized text values.
 Outputs:
-    Hex digest strings used for cache keys and safe file identification.
+    Hex digest strings safe to use as identifiers and dedupe keys.
 Dependencies:
     Standard library `hashlib`.
 TODO Checklist:
-    - [ ] Add unit tests for stream/file object hashing helper.
-    - [ ] Support additional hash algorithms if needed for research.
+    - [ ] Add tests for stream/file object hashing helper.
+    - [ ] Add alternate algorithms only if a real requirement appears.
 """
 
 import hashlib
@@ -31,3 +31,8 @@ def sha256_chunks(chunks: Iterable[bytes]) -> str:
     for chunk in chunks:
         digest.update(chunk)
     return digest.hexdigest()
+
+
+def sha256_text(value: str) -> str:
+    """Hash normalized text values such as URLs or pasted email signals."""
+    return sha256_bytes(value.encode("utf-8"))

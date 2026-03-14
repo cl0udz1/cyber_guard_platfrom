@@ -1,18 +1,34 @@
-# Week 3 To-Do List (Team A-F)
+# WEEK_3_TODO.md
 
 ## Goal
-Complete guest scan pipeline with caching and VirusTotal integration skeleton.
 
-| Person | To-Do | Main File Names |
+Build the scan orchestration skeleton: normalization, IOC extraction, adapters, caching, and AI mode selection.
+
+## Deliverables
+
+- working scaffold `POST /scan-jobs`
+- multi-source enrichment slots
+- local/API AI mode placeholders
+- duplicate submission cache behavior
+
+## Per-Owner Tasks
+
+| Owner | Tasks | Main Files |
 |---|---|---|
-| A | Improve VirusTotal client request/retry behavior and errors. | `backend/app/services/virustotal_client.py`, `backend/app/utils/rate_limit.py` |
-| B | Refine scan orchestration and report generation rules. | `backend/app/services/scan_service.py`, `backend/app/services/report_service.py` |
-| C | Finalize scan endpoints and input normalization/hash utilities. | `backend/app/api/v1/endpoints/scan.py`, `backend/app/utils/validators.py`, `backend/app/utils/hashing.py`, `backend/app/models/scan_result.py` |
-| D | Connect frontend guest scan page to URL/file scan endpoints. | `frontend/src/pages/GuestScanPage.tsx`, `frontend/src/components/UrlInput.tsx`, `frontend/src/components/FileUpload.tsx`, `frontend/src/api/endpoints.ts`, `frontend/src/types/scan.ts` |
-| E | Document scan contract and caching notes. | `docs/API_CONTRACT.md`, `README.md`, `docs/PROJECT_PLAN.md` |
-| F | Add/maintain scan and VT client test coverage. | `backend/tests/test_scan_endpoints.py`, `backend/tests/test_virustotal_client.py` |
+| A | Keep scan job route behavior and responses consistent. | `backend/app/api/routes/scan_jobs.py`, `backend/app/schemas/scan.py` |
+| B | Implement orchestration flow and adapter interfaces. | `backend/app/services/scan_orchestrator.py`, `backend/app/services/enrichment/*`, `backend/app/services/ai/*` |
+| C | Validate model alignment for artifact submissions, scan jobs, and enrichment results. | `backend/app/models/artifact_submission.py`, `backend/app/models/scan_job.py`, `backend/app/models/enrichment_result.py` |
+| D | Build scan page forms and queue view wiring plan. | `frontend/src/pages/scan/*`, `frontend/src/components/scan/*` |
+| E | Keep dashboard placeholders ready for scan-state metrics. | `frontend/src/pages/dashboard/*`, `frontend/src/components/dashboard/*` |
+| F | Add tests for duplicate submissions, adapter shape, and AI mode decisions. | `backend/tests/unit/*`, `backend/tests/integration/test_scan_jobs_routes.py` |
 
-## Team Checklist
-- [ ] URL scan works and reuses cache.
-- [ ] File scan works and reuses cache by SHA-256.
-- [ ] Test suite covers cache hit vs miss behavior.
+## Dependency Notes
+
+- do not hard-code the app around a single source
+- keep AI optional and swappable
+
+## Done Criteria
+
+- scan job route works end-to-end at scaffold level
+- repeated identical submission reuses cached result
+- at least two enrichment adapters are visible in the flow

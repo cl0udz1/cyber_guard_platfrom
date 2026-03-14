@@ -1,83 +1,90 @@
-# TEST_PLAN.md - MVP Test Strategy and Traceability
+# TEST_PLAN.md
 
-## Header
-- Purpose: Define what to test, why it matters, and where automated tests live.
-- Inputs/Outputs: Test cases mapped to MVP requirements.
-- Dependencies: pytest suite in `backend/tests`.
-- TODO Checklist:
-  - [ ] Add frontend test plan (component/unit/e2e).
-  - [ ] Add performance and security test scenarios.
-  - [ ] Add CI execution matrix and pass/fail thresholds.
+## Purpose
 
-## Test Levels
-- Unit tests:
-  - anonymizer rules
-  - VT client behavior with mocked HTTP responses
-  - helper logic (hashing/normalization in future expansion)
-- API integration tests (local):
-  - auth endpoints
-  - scan endpoints
-  - dashboard endpoint
-- Manual UI smoke tests:
-  - page navigation and API interaction from frontend
+This plan expands testing beyond simple endpoint checks. The updated product has private/public separation, RBAC, multi-source enrichment, optional AI paths, and moderated public publishing, so the test plan needs to reflect that.
 
-## Key Requirement Traceability
+## Test Layers
 
-| Requirement ID | Requirement | Test Coverage |
+### Unit
+
+- permission helpers
+- sanitization/privacy rules
+- normalization behavior
+- enrichment adapter shape
+- AI mode selection logic
+- report generation rules
+- cache behavior
+
+### Integration
+
+- auth and `/me`
+- workspace/org route access
+- scan job submission and polling
+- report retrieval and publish request flow
+- public feed access
+- admin review access and decision flow
+
+### Contract
+
+- route surface in OpenAPI
+- request/response field shape for major route groups
+- phase-2 endpoints clearly labeled and isolated
+
+### Manual
+
+- frontend shell navigation
+- role-based page expectations
+- dashboard and public threats content review
+- assignment map and TODO workflow review
+
+## Priority Coverage Areas
+
+| Area | Why It Matters | Suggested Coverage |
 |---|---|---|
-| R1 | Guest URL scan returns SAFE/SUSPICIOUS/MALICIOUS report | `backend/tests/test_scan_endpoints.py` |
-| R2 | Guest file scan does not execute files and returns report | `backend/tests/test_scan_endpoints.py` |
-| R3 | URL/file caching reduces repeated external lookups | `backend/tests/test_scan_endpoints.py` cache hit tests |
-| R4 | Login returns JWT bearer token | `backend/tests/test_auth_endpoints.py` |
-| R5 | Authenticated `/auth/me` returns user info | `backend/tests/test_auth_endpoints.py` |
-| R6 | IoC anonymization rejects identity-like fields | `backend/tests/test_anonymizer.py` |
-| R7 | Dashboard summary returns counts and recent items | `backend/tests/test_dashboard_endpoints.py` |
-| R8 | VirusTotal integration uses HTTP client + handles retry path | `backend/tests/test_virustotal_client.py` |
+| Auth + RBAC | Prevents wrong users from reaching private/admin surfaces | route tests for auth, `/me`, admin review denial/allow |
+| Sanitization + privacy | Critical design rule | unit tests for forbidden keys and sanitized summaries |
+| Multi-source adapters | Replaces old single-source assumption | unit tests for adapter outputs and orchestrator aggregation |
+| AI mode selection | Local vs API behavior changes pipeline expectations | unit tests for local/api/off mode branches |
+| Report generation | Core user-facing deliverable | integration test from scan job to report retrieval |
+| Admin review flow | Required for external public sharing governance | integration tests for queue and decisions |
+| Public threats publishing | Must remain identity-safe | publish-request validation and public feed tests |
+| Caching / duplicates | Important for repeat submissions and demo stability | duplicate submission test for same normalized artifact |
 
-## Detailed Test Cases (Initial)
+## Suggested Automated Suite
 
-1. Auth login success
-- Input: valid email + demo password
-- Expected: 200 with `access_token`, `token_type="bearer"`
+### Current Scaffold Tests
 
-2. Auth me endpoint
-- Input: valid bearer token
-- Expected: 200 with `email`, `role`
+- `backend/tests/unit/test_permissions.py`
+- `backend/tests/unit/test_sanitization_service.py`
+- `backend/tests/unit/test_enrichment_adapters.py`
+- `backend/tests/integration/test_auth_routes.py`
+- `backend/tests/integration/test_scan_jobs_routes.py`
+- `backend/tests/integration/test_public_threats_routes.py`
+- `backend/tests/contract/test_api_contract_shape.py`
 
-3. URL scan cache miss then hit
-- Input: same URL submitted twice
-- Expected: first call triggers external lookup; second call reuses cached scan ID
+### Next Tests To Add
 
-4. File scan cache miss then hit
-- Input: same file bytes submitted twice (different filename allowed)
-- Expected: second call uses same cached scan result
+- org/workspace creation authorization
+- integrations catalog response shape
+- AI mode `off` path
+- report publish request sanitizer edge cases
+- external upload review request path
+- dashboard response shape and filters
 
-5. Anonymizer reject identity field
-- Input: IoC payload includes `user_id`
-- Expected: reject with validation error
+## Manual Checklist
 
-6. VT client mocked success
-- Input: mocked HTTP 200 for VT URL endpoint
-- Expected: parsed JSON returned correctly
+1. Open the frontend scaffold shell and confirm all sections are visible.
+2. Confirm the repo tree matches the assignment map.
+3. Create a scan job via API and verify a report ID is returned.
+4. Retrieve the report and confirm source summary plus AI summary fields exist.
+5. Request publication and confirm the response is review-oriented, not directly linked to org/workspace fields.
+6. Open the public threats endpoint and confirm it exposes only public-safe data.
+7. Verify admin review routes reject non-admin callers.
 
-7. VT client mocked 429 then 200
-- Input: mocked sequence [429, 200]
-- Expected: retry succeeds and returns second response
+## Exit Criteria
 
-8. Dashboard summary shape
-- Input: seeded IoC and scan rows + auth token
-- Expected: `counts_by_type`, `recent_iocs`, `recent_scans` returned
-
-## Manual Test Checklist (Frontend)
-
-1. Start backend + frontend.
-2. On Guest Scan page:
-- Submit URL and verify safety report appears.
-- Submit file and verify safety report appears.
-- Click PDF download button and verify download starts.
-3. On Login page:
-- Login with demo password and verify no error.
-4. On Submit IoC page:
-- Submit valid IoC and verify success message.
-5. On Dashboard page:
-- Verify chart and recent lists render after login.
+- unit, integration, and contract tests pass locally
+- the public/private boundary has at least one dedicated automated test
+- route groups in docs and OpenAPI match
+- weekly TODO files point to test ownership clearly

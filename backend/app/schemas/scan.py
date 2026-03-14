@@ -1,38 +1,49 @@
 """
 Purpose:
-    Pydantic schemas for scan request/response payloads.
+    Scan job schemas describing orchestration state and source outputs.
 Inputs:
-    URL/file scan endpoint payloads.
+    Scan submission routes and job polling endpoints.
 Outputs:
-    API contract-compliant scan results.
+    Typed async scan responses.
 Dependencies:
-    Pydantic, datetime typing.
+    Pydantic models and scaffold enums.
 TODO Checklist:
-    - [ ] Add richer scan reason taxonomy.
-    - [ ] Add confidence explanations for score generation.
+    - [ ] Add pagination/filter support for job history routes later.
+    - [ ] Add richer worker/progress metadata only if the UI really needs it.
 """
 
 from datetime import datetime
-from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel
 
-ScanStatus = Literal["SAFE", "SUSPICIOUS", "MALICIOUS"]
-
-
-class ScanUrlRequest(BaseModel):
-    """Request body for `POST /api/v1/scan/url`."""
-
-    model_config = ConfigDict(extra="forbid")
-    url: str = Field(..., examples=["https://example.org/login"])
+from app.schemas.artifact import ArtifactSubmissionRequest, ArtifactSubmissionResponse
+from app.utils.enums import AiMode, ScanJobStatus
 
 
-class ScanResponse(BaseModel):
-    """Shared response body for URL/file scan endpoints."""
+class SourceHit(BaseModel):
+    """Compact per-source enrichment result."""
 
-    scan_id: str
-    status: ScanStatus
-    score: int = Field(..., ge=0, le=100)
+    source_name: str
+    verdict: str
+    confidence_score: int
     summary: str
-    reasons: list[str]
+
+
+class ScanJobCreateRequest(BaseModel):
+    """Create scan job payload."""
+
+    artifact: ArtifactSubmissionRequest
+    ai_mode: AiMode = AiMode.LOCAL
+
+
+class ScanJobResponse(BaseModel):
+    """Scan job status response."""
+
+    scan_job_id: str
+    status: ScanJobStatus
+    artifact: ArtifactSubmissionResponse
+    ai_mode: AiMode
+    sources: list[SourceHit]
+    report_id: str | None = None
     created_at: datetime
+    completed_at: datetime | None = None

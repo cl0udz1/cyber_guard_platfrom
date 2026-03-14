@@ -1,216 +1,157 @@
-# cyber_guard_platform (Senior Project II Skeleton)
+# Cyber Guard Platform
 
-## Clone and Setup (Start Here)
+This repository is a Senior Project II implementation scaffold, not a finished application. Its job is to act as an implementation map for a 6-person student team: the folder structure, placeholders, API stubs, diagrams, weekly TODO files, and ownership notes are the product here.
 
-### 1) Clone the repository
-```bash
-git clone https://github.com/cl0udz1/cyber_guard_platform.git
-cd cyber_guard_platform
-```
+## What Cyber Guard Is
 
-### 2) Backend setup
-```bash
-cd backend
-python -m venv .venv
-# Windows PowerShell:
-.venv\Scripts\Activate.ps1
-# macOS/Linux:
-# source .venv/bin/activate
-cp .env.example .env
-pip install -r requirements.txt
-uvicorn app.main:app --reload
-```
+Cyber Guard is a web platform where users and organizations can:
 
-Backend URL: `http://localhost:8000`
+- create accounts
+- join organizations with workspace roles
+- submit artifacts for analysis by file upload, hash, URL, or pasted email signal
+- run asynchronous scan jobs
+- normalize artifacts, extract IOCs, enrich from multiple threat-intel sources, and optionally use AI analysis
+- generate private threat reports and dashboard views
+- publish anonymized reports to a public threats page
+- upload external reports for anonymous public sharing through admin review
+- optionally expose a future Public Threats API
 
-### 3) Frontend setup (new terminal)
-```bash
-cd frontend
-cp .env.example .env
-npm install
-npm run dev
-```
+Critical rule: public threat data must remain disconnected from private identity and workspace data.
 
-Frontend URL: `http://localhost:5173`
+## What This Repo Is For
 
-### 4) Run backend tests
-```bash
-cd backend
-pytest -q
-```
+- showing the updated product scope clearly
+- showing where each backend/frontend concern belongs
+- keeping assignment ownership visible
+- giving the team a realistic next-step checklist without pretending the whole app is already built
 
-## 6-Week Execution Files (Follow These)
-
-Use these six files as your week-by-week implementation checklist:
-
-1. `docs/WEEK_1_TODO.md`
-2. `docs/WEEK_2_TODO.md`
-3. `docs/WEEK_3_TODO.md`
-4. `docs/WEEK_4_TODO.md`
-5. `docs/WEEK_5_TODO.md`
-6. `docs/WEEK_6_TODO.md`
-
-How to follow them:
-- Start from Week 1 and move in order to Week 6.
-- Use A/B/C/D/E/F role assignments shown in each file.
-- At the end of each week, mark completed tasks and carry unfinished items to the next week.
-- Sync changes to GitHub weekly with one clear commit per week milestone.
-
-## Architecture Diagrams
-
-### 1) Current Repository Structure
-```mermaid
-flowchart TD
-    ROOT["cyber_guard_platform/"]
-
-    ROOT --> BACKEND["backend/"]
-    ROOT --> FRONTEND["frontend/"]
-    ROOT --> DOCS["docs/"]
-    ROOT --> INFRA["root configs"]
-
-    BACKEND --> B_APP["app/\n(api, core, db, models, schemas, services, utils)"]
-    BACKEND --> B_TESTS["tests/"]
-    BACKEND --> B_REQ["requirements.txt"]
-    BACKEND --> B_ENV[".env.example"]
-
-    FRONTEND --> F_SRC["src/\n(api, pages, components, types, utils)"]
-    FRONTEND --> F_CFG["vite + tsconfig + package.json"]
-    FRONTEND --> F_ENV[".env.example"]
-
-    DOCS --> D_PLAN["PROJECT_PLAN.md"]
-    DOCS --> D_API["API_CONTRACT.md"]
-    DOCS --> D_TEST["TEST_PLAN.md"]
-    DOCS --> D_WEEK["WEEK_1..WEEK_6_TODO.md"]
-
-    INFRA --> I_README["README.md"]
-    INFRA --> I_DOCKER["docker-compose.yml"]
-    INFRA --> I_ENV[".env.example"]
-```
-
-### 2) Current Runtime/Data Flow (MVP Skeleton)
-```mermaid
-flowchart LR
-    U["Guest / Org User"] --> FE["Frontend (React + Vite)"]
-    FE --> API["Backend API (FastAPI)"]
-
-    API --> AUTH["Auth Endpoints\n/login, /me"]
-    API --> SCAN["Scan Endpoints\n/url, /file, /{scan_id}"]
-    API --> IOC["IoC Endpoint\n/submit"]
-    API --> DASH["Dashboard Endpoint\n/summary"]
-
-    SCAN --> SS["scan_service.py"]
-    SS --> CACHE["Scan Cache (DB)\nurl normalized / sha256"]
-    SS --> VT["virustotal_client.py"]
-    VT --> EXT["VirusTotal API"]
-
-    IOC --> ANON["anonymizer.py\nreject identity fields"]
-    ANON --> IOCDB["IoC Table (anonymous only)"]
-
-    DASH --> DBR["DB aggregate queries"]
-    AUTH --> JWT["JWT helpers"]
-
-    DB[(PostgreSQL)] --- CACHE
-    DB --- IOCDB
-    DB --- DBR
-```
-
-### 3) Future Target State (Smart Growth Path)
-```mermaid
-flowchart TB
-    NOW["Current MVP Skeleton"]
-    W6["Week 6 Stable Demo"]
-    V1["Production-Ready v1"]
-    V2["Analytics + Collaboration v2"]
-
-    NOW --> W6 --> V1 --> V2
-
-    V1 --> P1["Real DB-backed auth\n(user/org tables + RBAC)"]
-    V1 --> P2["Full VT workflow\n(submit + poll + normalized evidence)"]
-    V1 --> P3["PDF endpoint\nserver-generated report downloads"]
-    V1 --> P4["Alembic migrations + CI pipeline\n(test/lint/security checks)"]
-
-    V2 --> X1["Trend analytics APIs\n(time buckets, top tags, patterns)"]
-    V2 --> X2["Improved privacy controls\npolicy-driven anonymizer rules"]
-    V2 --> X3["Team operations\nreview queues + moderation flow"]
-```
-
-### 4) Additional Detailed Diagrams
-- [`docs/diagrams/API_SEQUENCE.md`](docs/diagrams/API_SEQUENCE.md)
-- [`docs/diagrams/DATABASE_ERD.md`](docs/diagrams/DATABASE_ERD.md)
-
-## Header
-- Purpose: Starter codebase for a cybersecurity web platform with guest scanning, organization login, anonymized IoC sharing, and dashboard basics.
-- Inputs/Outputs: Backend API + frontend web app + PostgreSQL schema + tests + docs.
-- Dependencies: FastAPI, SQLAlchemy, PostgreSQL, React (Vite), pytest.
-- TODO Checklist:
-  - [ ] Implement full VirusTotal workflow (submit + poll + richer parsing).
-  - [ ] Replace demo auth with real user registration and password storage flow.
-  - [ ] Expand dashboard trends and charting.
-  - [ ] Add migration scripts and CI pipeline.
-
-## Project Idea Implemented
-This scaffold follows the required **cyber_guard_platform** MVP:
-- Guest scan URL/file through VirusTotal integration wrapper.
-- Safety report output: `SAFE | SUSPICIOUS | MALICIOUS`.
-- Organization login with JWT token.
-- Anonymous IoC submission with **Disconnect by Design** enforcement.
-- Dashboard summary with counts and recent records.
+The backend and frontend both run, but many files are intentionally placeholders with rich headers and TODO blocks.
 
 ## Quick Start
 
-### 1) Backend
+### Backend
+
 ```bash
 cd backend
-cp .env.example .env
+python -m venv .venv
+.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
+copy .env.example .env
 uvicorn app.main:app --reload
 ```
 
-Backend default URL: `http://localhost:8000`
+### Frontend
 
-### 2) Frontend
 ```bash
 cd frontend
-cp .env.example .env
 npm install
+copy .env.example .env
 npm run dev
 ```
 
-Frontend default URL: `http://localhost:5173`
+### Validation
 
-### 3) Run Backend Tests
 ```bash
 cd backend
 pytest -q
+
+cd ../frontend
+npm run build
 ```
 
-## Required API Endpoints (Implemented Skeleton)
-- `POST /api/v1/scan/url`
-- `POST /api/v1/scan/file`
-- `GET /api/v1/scan/{scan_id}`
-- `POST /api/v1/auth/login`
-- `GET /api/v1/auth/me`
-- `POST /api/v1/ioc/submit`
-- `GET /api/v1/dashboard/summary`
+Demo passwords in the scaffold:
 
-## Privacy Rule (Critical)
-IoC storage intentionally excludes submitter identity linkage:
-- No `user_id`
-- No `org_id`
-- No IP/email/username linkage
-- `anonymizer.py` rejects identity-like fields and unexpected extras
+- org routes: `org-admin-demo`
+- admin review routes: `platform-admin-demo`
 
-Stored IoC shape is limited to:
-`type`, `value`, `confidence`, `tags`, `first_seen`, `created_at`.
+## Architecture Tree
 
-## Documentation
-- `docs/PROJECT_PLAN.md` - weekly execution roadmap.
-- `docs/API_CONTRACT.md` - request/response contract details.
-- `docs/TEST_PLAN.md` - test strategy and traceability matrix.
+```text
+cyber-guard-platform/
+|-- backend/
+|   |-- app/
+|   |   |-- api/
+|   |   |   |-- routes/
+|   |   |-- core/
+|   |   |-- db/
+|   |   |   |-- models/
+|   |   |-- models/
+|   |   |-- schemas/
+|   |   |-- services/
+|   |   |   |-- enrichment/
+|   |   |   |-- ai/
+|   |   |-- utils/
+|   |-- tests/
+|   |   |-- unit/
+|   |   |-- integration/
+|   |   |-- contract/
+|-- frontend/
+|   |-- src/
+|   |   |-- api/
+|   |   |-- app/
+|   |   |-- pages/
+|   |   |   |-- auth/
+|   |   |   |-- dashboard/
+|   |   |   |-- scan/
+|   |   |   |-- reports/
+|   |   |   |-- public-threats/
+|   |   |   |-- admin/
+|   |   |   |-- workspace/
+|   |   |-- components/
+|   |   |-- features/
+|   |   |-- types/
+|   |   |-- utils/
+|   |   |-- mocks/
+|-- docs/
+|   |-- PROJECT_PLAN.md
+|   |-- API_CONTRACT.md
+|   |-- TEST_PLAN.md
+|   |-- ARCHITECTURE.md
+|   |-- DATA_FLOW.md
+|   |-- ASSIGNMENT_MAP.md
+|   |-- IMPLEMENTATION_STATUS.md
+|   |-- WEEK_1_TODO.md ... WEEK_6_TODO.md
+|   |-- diagrams/
+```
 
-## Notes for Student Teams
-- Uploaded files are never executed; only hashed and looked up.
-- Scan caching exists:
-  - file scans by SHA-256
-  - URL scans by normalized URL
-- VirusTotal failures and rate limits are handled with retry-aware skeleton code.
+## Implementation Phases
+
+### MVP
+
+1. auth, orgs, workspaces, and RBAC scaffold
+2. models, schemas, and API contract alignment
+3. async scan orchestration skeleton with multi-source adapters
+4. private reports, public sharing, and admin review structure
+5. frontend page/component ownership map
+6. tests, docs, and implementation tracking
+
+### Later / Phase 2
+
+- public threats API
+- richer trend analytics
+- real background workers
+- real adapter integrations
+- real AI provider/local model implementations
+
+## How The Team Should Use This Repo
+
+1. Read [`docs/ASSIGNMENT_MAP.md`](docs/ASSIGNMENT_MAP.md) before splitting work.
+2. Use [`docs/IMPLEMENTATION_STATUS.md`](docs/IMPLEMENTATION_STATUS.md) as the live tracker.
+3. Work from the current weekly file in `docs/WEEK_*_TODO.md`.
+4. Keep placeholders and TODOs meaningful when adding new files.
+5. Preserve the privacy boundary: public threat records must not expose identity/workspace linkage.
+
+## Key Docs
+
+- [`docs/PROJECT_PLAN.md`](docs/PROJECT_PLAN.md)
+- [`docs/API_CONTRACT.md`](docs/API_CONTRACT.md)
+- [`docs/TEST_PLAN.md`](docs/TEST_PLAN.md)
+- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)
+- [`docs/DATA_FLOW.md`](docs/DATA_FLOW.md)
+- [`docs/ASSIGNMENT_MAP.md`](docs/ASSIGNMENT_MAP.md)
+- [`docs/IMPLEMENTATION_STATUS.md`](docs/IMPLEMENTATION_STATUS.md)
+- [`docs/diagrams/SYSTEM_OVERVIEW.md`](docs/diagrams/SYSTEM_OVERVIEW.md)
+- [`docs/diagrams/DATA_SEPARATION.md`](docs/diagrams/DATA_SEPARATION.md)
+- [`docs/diagrams/SCAN_PIPELINE.md`](docs/diagrams/SCAN_PIPELINE.md)
+- [`docs/diagrams/SHARING_REVIEW_FLOW.md`](docs/diagrams/SHARING_REVIEW_FLOW.md)
+- [`docs/diagrams/ERD.md`](docs/diagrams/ERD.md)

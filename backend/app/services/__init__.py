@@ -1,1 +1,1 @@
-"""Package marker for Cyber Guard backend modules."""
+"""Service layer for Cyber Guard scaffold orchestration and placeholders."""

@@ -1,18 +1,36 @@
-# Week 6 To-Do List (Team A-F)
+# WEEK_6_TODO.md
 
 ## Goal
-Final stabilization, demo prep, and submission package completion.
 
-| Person | To-Do | Main File Names |
+Finish validation, docs, diagrams, and handoff readiness for implementation.
+
+## Deliverables
+
+- passing backend tests
+- passing frontend build
+- current diagrams
+- current implementation tracker
+- ready-to-assign repo for the full team
+
+## Per-Owner Tasks
+
+| Owner | Tasks | Main Files |
 |---|---|---|
-| A | Final backend bug fixes and API polish for demo reliability. | `backend/app/api/v1/endpoints/auth.py`, `backend/app/api/v1/endpoints/scan.py`, `backend/app/api/v1/endpoints/ioc.py`, `backend/app/api/v1/endpoints/dashboard.py` |
-| B | DB/migration readiness review and future migration notes. | `backend/alembic.ini`, `backend/app/models/user.py`, `backend/app/models/ioc.py`, `backend/app/models/scan_result.py` |
-| C | Security/privacy final review against "Disconnect by Design" rule. | `backend/app/services/anonymizer.py`, `backend/app/schemas/ioc.py`, `README.md` |
-| D | Frontend final demo flow polish and manual test walk-through. | `frontend/src/App.tsx`, `frontend/src/pages/GuestScanPage.tsx`, `frontend/src/pages/DashboardPage.tsx` |
-| E | Final docs package and evidence map updates. | `docs/PROJECT_PLAN.md`, `docs/API_CONTRACT.md`, `docs/TEST_PLAN.md`, `docs/EVIDENCE_INDEX.md` |
-| F | Execute final QA checklist and archive test evidence output. | `backend/tests/test_auth_endpoints.py`, `backend/tests/test_scan_endpoints.py`, `backend/tests/test_dashboard_endpoints.py`, `backend/tests/test_virustotal_client.py` |
+| A | Review route consistency and remove stale contract drift. | `backend/app/api/*`, `docs/API_CONTRACT.md` |
+| B | Review service TODOs and mark realistic next steps. | `backend/app/services/*`, `docs/ARCHITECTURE.md` |
+| C | Review model comments, privacy separation, and RBAC notes. | `backend/app/models/*`, `docs/diagrams/DATA_SEPARATION.md`, `docs/diagrams/ERD.md` |
+| D | Review scan/report UI ownership and placeholder quality. | `frontend/src/pages/scan/*`, `frontend/src/pages/reports/*` |
+| E | Review dashboard/public/admin pages for assignment clarity. | `frontend/src/pages/dashboard/*`, `frontend/src/pages/public-threats/*`, `frontend/src/pages/admin/*` |
+| F | Run tests/build, update status tracker, and capture evidence checklist. | `backend/tests/*`, `frontend/src/*`, `docs/IMPLEMENTATION_STATUS.md`, `docs/EVIDENCE_INDEX.md` |
 
-## Team Checklist
-- [ ] Demo script runs cleanly from start to finish.
-- [ ] Final report references current file structure and contract.
-- [ ] Evidence set is complete for grading/submission.
+## Dependency Notes
+
+- this week is about stabilization, not new feature sprawl
+- any scope increase must be labeled as Phase 2
+
+## Done Criteria
+
+- `pytest -q` passes
+- `npm run build` passes
+- docs and diagrams match the current tree
+- a new teammate can open the repo and know where to start

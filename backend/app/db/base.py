@@ -1,19 +1,19 @@
 """
 Purpose:
-    SQLAlchemy Declarative Base class shared by all ORM models.
+    SQLAlchemy declarative base shared by the refreshed scaffold models.
 Inputs:
-    ORM model declarations import this base and inherit from it.
+    ORM model declarations from `app.models`.
 Outputs:
-    Base metadata used for table creation and migrations.
+    Metadata object used by tests and future Alembic migrations.
 Dependencies:
     SQLAlchemy ORM.
 TODO Checklist:
-    - [ ] Add naming conventions for constraints/indexes for Alembic stability.
-    - [ ] Split models into bounded contexts as project grows.
+    - [ ] Add naming conventions for stable Alembic diffs.
+    - [ ] Split metadata if the public-share schema becomes physically separate.
 """
 
 from sqlalchemy.orm import DeclarativeBase
 
 
 class Base(DeclarativeBase):
-    """Common declarative base for all tables."""
+    """Common declarative base for Cyber Guard ORM tables."""

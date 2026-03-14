@@ -1,40 +1,33 @@
 """
 Purpose:
-    Response schemas for dashboard analytics endpoints.
+    Dashboard overview schemas for workspace and organization analytics.
 Inputs:
-    Aggregated DB query results.
+    Dashboard service outputs.
 Outputs:
-    Typed dashboard summary JSON payload.
+    Typed summary responses for the frontend dashboard page.
 Dependencies:
-    Pydantic models, scan/ioc schema concepts.
+    Pydantic models.
 TODO Checklist:
-    - [ ] Add trend buckets by day/week.
-    - [ ] Add top tags and top repeated IoCs.
+    - [ ] Add time-range filters and trend buckets when chart work begins.
+    - [ ] Add public/private comparison metrics only if they improve the demo.
 """
-
-from datetime import datetime
-from typing import Literal
 
 from pydantic import BaseModel
 
-from app.schemas.ioc import IocPublicRecord
 
-ScanStatus = Literal["SAFE", "SUSPICIOUS", "MALICIOUS"]
+class DashboardMetric(BaseModel):
+    """Single dashboard KPI card."""
 
-
-class DashboardRecentScan(BaseModel):
-    """Compact scan shape used in dashboard recent list."""
-
-    scan_id: str
-    status: ScanStatus
-    score: int
-    summary: str
-    created_at: datetime
+    label: str
+    value: str
+    note: str
 
 
-class DashboardSummaryResponse(BaseModel):
-    """Response model for `GET /api/v1/dashboard/summary`."""
+class DashboardOverviewResponse(BaseModel):
+    """High-level dashboard response."""
 
-    counts_by_type: dict[str, int]
-    recent_iocs: list[IocPublicRecord]
-    recent_scans: list[DashboardRecentScan]
+    workspace_id: str
+    metrics: list[DashboardMetric]
+    recent_scan_statuses: dict[str, int]
+    publish_queue_count: int
+    top_sources: list[str]

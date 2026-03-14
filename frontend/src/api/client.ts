@@ -1,6 +1,6 @@
 /**
  * Purpose:
- *   Base fetch wrapper for backend API requests.
+ *   Shared fetch wrapper for future backend integration.
  * Inputs:
  *   Endpoint path, request options, optional auth token.
  * Outputs:
@@ -8,17 +8,13 @@
  * Dependencies:
  *   Browser Fetch API + Vite env variables.
  * TODO Checklist:
- *   - [ ] Add retry logic for transient network failures.
- *   - [ ] Add centralized toast/error reporting integration.
+ *   - [ ] Add retry/cancellation behavior for async scan job polling.
+ *   - [ ] Standardize error envelopes once backend error contracts are finalized.
  */
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8000";
 
-export async function apiRequest<T>(
-  path: string,
-  options: RequestInit = {},
-  token?: string
-): Promise<T> {
+export async function apiRequest<T>(path: string, options: RequestInit = {}, token?: string): Promise<T> {
   const headers = new Headers(options.headers ?? {});
 
   const isFormData = options.body instanceof FormData;

@@ -1,16 +1,16 @@
 """
 Purpose:
-    Organization user model for authenticated portal features.
+    Private identity model for Cyber Guard accounts.
 Inputs:
-    Insert/update operations from auth/user management services.
+    Account creation, login, and organization membership workflows.
 Outputs:
-    Persisted user rows used by future real authentication flow.
+    Persisted user rows for future DB-backed authentication.
 Dependencies:
     SQLAlchemy Base and model column types.
 TODO Checklist:
-    - [ ] Add registration/invitation flow for organization admins.
-    - [ ] Add password reset metadata and audit fields.
-    - [ ] Add role enum table/permission mapping if RBAC grows.
+    - [ ] Add email verification and invitation acceptance metadata.
+    - [ ] Add audit fields for last login and password reset events.
+    - [ ] Keep public-sharing data disconnected from this identity table.
 """
 
 from datetime import datetime, timezone
@@ -23,20 +23,15 @@ from app.db.base import Base
 
 
 class User(Base):
-    """
-    Basic user table.
-
-    NOTE:
-        IoC submissions intentionally must NOT reference this table to preserve
-        "Disconnect by Design" anonymity rules.
-    """
+    """Private user account table used for authenticated experiences."""
 
     __tablename__ = "users"
 
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=lambda: str(uuid4()))
+    display_name: Mapped[str] = mapped_column(String(120))
     email: Mapped[str] = mapped_column(String(255), unique=True, index=True)
     password_hash: Mapped[str] = mapped_column(String(255))
-    role: Mapped[str] = mapped_column(String(32), default="org_user")
+    platform_role: Mapped[str] = mapped_column(String(32), default="analyst")
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
