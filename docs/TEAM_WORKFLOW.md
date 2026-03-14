@@ -41,7 +41,7 @@ The tracker should match:
 
 Current integrator and merge coordinator:
 
-- `220003069 - ABDULLAH BAALI`
+- `220041379 - MUHANNAD ALKHARMANI`
 
 Integrator responsibilities:
 

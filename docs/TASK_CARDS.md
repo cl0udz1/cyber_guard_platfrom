@@ -132,7 +132,7 @@
 ## Task Card F
 
 - Owner: `220003069 - ABDULLAH BAALI`
-- Goal: Own docs, tests, diagrams, implementation tracking, integration alignment, and merge coordination.
+- Goal: Own docs, tests, diagrams, implementation tracking, and integration alignment.
 - Files:
   - `docs/*`
   - `docs/diagrams/*`
@@ -149,4 +149,4 @@
   - repo coordination docs stay trustworthy
   - merges and handoffs are organized
 - Notes:
-  - act as integrator for fallback submissions from weak Git users
+  - coordinate docs/tests handoff with Muhannad as current integrator

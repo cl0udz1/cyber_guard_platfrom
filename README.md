@@ -96,7 +96,7 @@ Detailed instructions are in `CONTRIBUTING.md` and `docs/SUBMISSION_RULES.md`.
 
 Current integrator / maintainer for this team scaffold:
 
-- `220003069 - ABDULLAH BAALI`
+- `220041379 - MUHANNAD ALKHARMANI`
 
 That role is documented so weaker Git users still have a safe submission path.
 

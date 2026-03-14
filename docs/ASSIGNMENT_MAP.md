@@ -15,7 +15,7 @@
 
 - Each person owns a main area.
 - Shared files require coordination first.
-- Abdullah BAALI is the current integrator / maintainer for merge coordination.
+- Muhannad Alkharmani is the current integrator / maintainer for merge coordination.
 - If your task depends on another owner, update the status tracker instead of silently waiting.
 
 ## A — 220028863 — BANDER SHOWAIL
